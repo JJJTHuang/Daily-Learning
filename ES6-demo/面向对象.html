@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>OOB</title>
+	<script>
+
+		// ---------  es5面向对象 实现一个类  ---------
+
+
+		// var Person = function(name,age){
+		// 	this.name = name;
+		// 	this.age = age;
+		// }
+
+		// Person.prototype.showName = function(){
+		// 	alert(this.name)
+		// }
+
+		// var p = new Person('Person',18)
+
+		// p.showName();
+
+
+
+		// -------- es5面向对象 实现继承 ---------
+
+
+		// var man = function(name,age,sex){
+			
+		// 	Person.call(this,name,age)
+		// 	this.sex = sex;
+
+		// }
+
+		// man.prototype = new Person()
+		// man.prototype.showSex= function(){
+		// 	alert(this.sex)
+		// }
+
+		// var m1 = new man('man',19,'male');
+
+		// m1.showName()
+		// m1.showSex()
+
+
+
+		// ------ es6 面向对象 -------
+
+
+		class Person{
+			constructor(name,age){
+				this.name = name
+				this.age = age
+			}
+
+			showName(){
+				alert(this.name)
+				return this
+			}
+		}
+
+		let p1 = new Person('hi',90)
+
+		p1.showName()
+
+		class man extends Person{
+			constructor(name,age,sex){
+				super(name,age)
+				this.sex = sex;
+			}
+
+			showSex(){
+				alert(this.sex)
+				return this
+			}
+
+			showHI(){
+				alert('hi')
+				return this
+			}
+		}
+
+		let man1 = new man('hii',99,'male')
+
+		man1.showHI().showSex()
+		// man1.showSex()
+
+	</script>	
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function(){
+
+            let ww = new Worker('1.js');
+            let arr = [1, 23, 4, 5];
+            ww.postMessage(arr);
+            
+            ww.onmessage = function(ev){
+
+                console.log(ev);
+                alert(ev.data);
+            }
+
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

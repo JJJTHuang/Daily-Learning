@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>   
+        window.onload = function() {
+            
+            let oTxt = document.querySelector("#txt"),
+                oBtn = document.querySelector("#btn");
+            
+            oTxt.value = localStorage.txt|| '';
+
+            oTxt.addEventListener('keyup',()=>{
+                localStorage.txt = oTxt.value;
+            })
+
+            oBtn.addEventListener('click',()=>{
+                alert('Success.');
+                delete localStorage.txt;
+                location.reload();   
+            })
+        }
+    </script>
+</head>
+<body>
+    <textarea id="txt" cols="30" rows="10"></textarea>
+    <input type="button" id="btn" value="提交">
+</body>
+</html>

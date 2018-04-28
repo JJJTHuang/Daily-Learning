@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .book {
+            height: 600px;
+            width: 600px;
+            border: 1px solid;
+            box-sizing: border-box;
+            position: relative;
+            margin: 100px auto;
+            perspective: 700px;
+            transform-style: preserve-3d;
+            transform: perspective(3500px) rotateX(40deg) 
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            border: 1px solid;
+            width: 298px;
+            height: 598px;
+            word-break: break-all;
+            background: #fff;
+        }
+
+        .page1 {
+            left: 0;
+        }
+
+        .page4 {
+            right: 0;
+        }
+
+        .child {
+            z-index: 3;
+            position: absolute;
+            width: 300px;
+            height: 600px;
+            top: 0;
+            right: 0;
+            transition: all 1s;
+            transform-style: preserve-3d;
+            transform-origin: left;
+            /* 此处让转轴一开始即为左轴 */
+            transform: rotateY(0deg)
+        }
+
+        .child:active {
+            transform: rotateY(-180deg);
+        }
+
+        .page2 {
+            transform: translateZ(1px);
+        }
+
+        .page3 {
+            transform: translateZ(-1px) scaleX(-1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="book">
+        <div class="page page1">11111111111111111111111111111111111111111</div>
+        <div class="child">
+            <div class="page page2">22222222222222222222222222222222222222222</div>
+            <div class="page page3">33333333333333333333333333333333333333333</div>
+        </div>
+        <div class="page page4">44444444444444444444444444444444444444444</div>
+    </div>
+</body>
+
+</html>

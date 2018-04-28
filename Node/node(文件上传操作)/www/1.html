@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .parent{
+            width:100%;
+            height: 30px;
+            border: 1px solid;
+        }
+        .child{
+            width: 0%;
+            height: 30px;
+            background: skyblue;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+
+            function $(str) {
+                return document.querySelector(str);
+            }
+
+            let oBtn = $("#btn"),
+                oF = $("#file");
+
+            oBtn.onclick = function () {
+
+                let xhr = new XMLHttpRequest(),
+                    data = new FormData();
+
+                Array.from(oF.files).forEach(file=>{
+                    data.append('oF',file);
+                })
+
+                xhr.open('POST', 'http://localhost:8080/api', true); //第三个参数指定同步还是异步
+
+                // xhr.upload.onprogress = function (ev) {}
+
+                xhr.upload.addEventListener('progress',function(ev){
+                    
+                    alert(1);
+
+                    let oP = $('.parent'),
+                        oC = $('.child');
+
+                    oC.style.width = 100*ev.loaded/ev.total+'%';
+                    
+                },false);
+
+                xhr.send(data);
+
+                xhr.onreadystatechange = function () {
+
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200 && xhr.status < 300 || xhr.status == 304) {
+                            alert('ajaxOK');
+                        } else {
+                            alert('ajaxFailed')
+                        }
+                    }
+
+                }
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child"></div>
+    </div>
+    <input type="file" id="file" multiple>
+    <input type="button" id='btn' value="submit">
+</body>
+
+</html>

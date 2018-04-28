@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>箭头函数与普通函数</title>
+	<script>
+		function show(){
+			alert(this)
+		}
+
+		document.onclick = show;
+		
+		
+	</script>
+</head>
+<body>
+	<p>普通函数:根据调用我的人    this改变</p>
+	<p>箭头函数:根据我所在的环境   this恒定</p>
+</body>
+</html>

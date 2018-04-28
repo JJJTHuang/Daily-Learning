@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function $(str){
+            return document.querySelector(str);
+        }
+        window.onload = function () {
+            let oBtn = $('#btn');
+
+            oBtn.onclick = function () {
+
+                let data = new FormData();
+                data.set('user',$('#user').value);
+                data.set('pass', $('#pass').value);
+
+                let xhr = new XMLHttpRequest();
+
+                let arr = [];
+                data.forEach((value,key)=>{
+                    arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+                })
+                xhr.open('POST',`http://localhost:8081/api?${arr.join('&')}`, true);
+                xhr.send();
+
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200 && xhr.status<300 || xhr.status==304){
+                            alert('成功:' + xhr.responseText);
+                        }else{
+                            alert('失败');
+                        }
+                    }
+                }
+
+            }
+        }
+    </script>
+</head>
+<body>
+    用户:<input type="text" id="user"><br>
+    密码:<input type="password" id="pass"><br>   
+    <input type="button" id="btn" value="tijiao">
+</body>
+</html>

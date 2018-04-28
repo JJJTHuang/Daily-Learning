@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='raphael.js'></script>
+    <script>
+        window.onload = function () {
+            var page = Raphael(0,0,800,600)
+
+            page.rect(100,100,200,200).attr('fill','red').click(function(){
+                this.animate({width:400,fill:'blue'},1000,'bounce')
+            })
+
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

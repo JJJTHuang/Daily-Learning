@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            height: 200px;
+            width: 200px;
+            background: #ccc;
+            margin: 100px auto;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+
+            let originL,L,oldScale,scale = 1;
+
+            let oBox = document.querySelector('.box');
+
+            function calSize(touch1,touch2) {
+
+                let x = touch1.clientX - touch2.clientX;
+                let y = touch1.clientY - touch2.clientY;
+
+                return Math.sqrt(Math.pow(x,2),Math.pow(y,2))
+
+            }
+
+            document.addEventListener('touchstart',(ev)=>{
+
+                if(ev.targetTouches.length>=2){
+                    originL = calSize(ev.targetTouches[0], ev.targetTouches[1]);
+                    oldScale = scale;
+
+                }
+            })
+
+            document.addEventListener('touchmove',(ev)=>{
+
+                if(ev.targetTouches.length>=2){
+                    
+                    L = calSize(ev.targetTouches[0], ev.targetTouches[1]);
+                    scale =  oldScale*L/originL;
+
+                    
+                    oBox.style.transform = `scale(${scale})`;
+
+                }
+                
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Generator</title>
+	<script>
+
+	// yield 可传参数，可返回值
+
+	//generator 将一个函数切成块
+
+	function *test(){
+
+		alert("1")
+
+		let a = yield;
+
+		alert(a) 
+
+		yield 5;
+		
+	}
+
+	let gen = test();
+
+	// let num1 = gen.next();
+
+	let num = gen.next(12)
+
+	console.log(num1,num)
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

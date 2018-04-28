@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function _Hero(name){
+            var self = this
+            this.name = name
+            this.queue = []
+            var _fn = (function(name){
+                return function(){
+                    console.log(`Hi i am ${name}`)
+                    self.next()
+                }
+            })(name)
+            
+            this.queue.push(_fn)
+
+            setTimeout(() => {
+                self.next()
+            }, 0);
+
+            
+        }
+
+        _Hero.prototype.next = function(){
+
+            let _fn = this.queue.shift()
+
+            _fn && _fn();
+
+        }
+
+        _Hero.prototype.sleep = function (time) {
+            
+            var _time = 1000*time,
+                _self = this
+
+            var _fn = (function(_time){
+                return function(){
+                    setTimeout(() => {
+                        console.log(`沉睡了...${_time}`)
+                        _self.next();
+                    }, _time)
+                }
+            })(_time)
+
+            this.queue.push(_fn)
+
+            return this
+
+        }
+
+        _Hero.prototype.say = function(){
+
+            var _self = this
+
+            var _fn = (function(){
+                return function(){
+                    console.log('say something')
+                    _self.next()
+                }
+            })()
+            
+            this.queue.push(_fn)
+
+            return this
+
+        }
+
+        function Hero(name){
+            return new _Hero(name)
+        }
+
+        Hero('Tim').say().sleep(1)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

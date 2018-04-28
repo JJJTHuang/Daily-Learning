@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            
+            function  $(str) {
+                return document.querySelector(str);
+            }
+
+            let oBtn = $('#btn1'),
+                oUser = $('#user'),
+                oPass = $('#pass'),
+                oFile =  $('#f1');
+
+            oBtn.onclick = function () {
+                
+                let data = new FormData();
+
+                data.set('user', oUser.value);
+                data.set('pass', oPass.value);
+
+                Array.from(oFile.files).forEach(file => {
+                    data.append('oFile', file);
+                });
+
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('post','http://localhost:8081/api',true);
+
+                xhr.send(data);
+
+                xhr.onreadystatechange = function () {
+                    
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200 && xhr.status <300 || xhr.status==304){
+                            alert('success');
+                        }else{
+                            alert('error');
+                        }
+                    }
+
+                }
+
+            }                
+
+
+        }
+    </script>
+</head>
+<body>
+     用户：
+    <input type="text" id="user" />
+    <br> 密码：
+    <input type="password" id="pass" />
+    <br> 头像：
+    <input type="file" id="f1" multiple />
+    <br>
+    <input type="button" value="提交" id="btn1">
+</body>
+</html>

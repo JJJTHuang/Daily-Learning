@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script>
+        $(function() {
+            $('#reg_btn').click(function() {
+                $.ajax({
+                    url: '/reg',
+                    data: {
+                        user: $('#user').val(),
+                        pass: $('#pass').val()
+                    },
+                    dataType: 'json',
+                    success(data) {
+                        alert('ajax成功' + data.msg)
+                    },
+                    error() {
+                        alert('ajax失败')
+                    }
+                })
+            })
+
+
+            $('#login_btn').click(function() {
+                $.ajax({
+                    url: '/login',
+                    data: {
+                        user: $('#user').val(),
+                        pass: $('#pass').val()
+                    },
+                    dataType: 'json',
+                    success(data) {
+                        alert('ajax成功' + data.msg)
+                    },
+                    error() {
+                        alert('ajax失败')
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+
+<body>
+    username:<input type="text" name="user" id="user"><br> password: <input type="password" name="pass" id="pass"><br>
+    <input type="submit" id="reg_btn" value="Register">
+    <input type="submit" id='login_btn' value="Login">
+
+</body>
+
+</html>

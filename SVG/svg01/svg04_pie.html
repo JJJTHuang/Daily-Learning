@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        path{
+            stroke-width: 10;
+            stroke: aqua;
+            fill: none;
+        }
+    </style>
+    <script>
+        function d2a(n){
+            return n*Math.PI/180
+        }
+
+        window.onload = function () {
+            
+            let oP = document.querySelector('path')
+
+            oP.addEventListener('mousemove',function(){
+                oP.style.stroke = '#aabbcc'
+            },false)
+            
+        }
+    </script>
+</head>
+<body>
+    <svg width='800' height='800'>
+        <path d='M 200 300 L 300 100 A 100 100 0 0 1 400 200 Z'></path>
+    </svg>
+</body>
+</html>

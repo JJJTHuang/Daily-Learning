@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            let oS = document.querySelector('svg')
+
+            let data = [10, 50, 60, 50, 10, 30], sum = 0
+
+            data.forEach(item => { sum += item })
+
+            function d2a(n) {
+                return n * Math.PI / 180
+            }
+
+            function drawPie(startAng, endAng) {
+
+                let cx = 300, cy = 300, r = 200
+
+                function getPoint(Ang) {
+                    return {
+                        x: cx + r * Math.sin(d2a(Ang)),
+                        y: cy - r * Math.cos(d2a(Ang))
+                    }
+                }
+
+                let { x: x1, y: y1 } = getPoint(startAng), { x: x2, y: y2 } = getPoint(endAng)
+
+                let oP = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+
+                let CNum = Math.floor(Math.random() * 16777215).toString(16)
+                if (CNum.length < 6) {
+                    CNum += '0'
+                }
+
+                oP.style.fill = `#${CNum}`
+                let arr = []
+
+                arr.push(`M ${cx} ${cy} L ${x1} ${y1}`)
+                arr.push(`A ${r} ${r} 0 ${endAng - startAng >= 180 ? 1 : 0} 1 ${x2} ${y2}`)
+                arr.push('Z')
+                oP.setAttribute('d', arr.join(' '))
+
+                oS.appendChild(oP)
+
+                oP.addEventListener('mouseover', ev => {
+                    let moveR = r * 3
+                    let _thisP = ev.target
+
+                    // arr[1] = `A ${moveR} ${moveR} 0 ${endAng - startAng >= 180 ? 1 : 0} 1 ${x2} ${y2}`
+
+                    let arr1 = [`M 300 400 L 200 200 A ${moveR} ${moveR} 0 ${endAng - startAng >= 180 ? 1 : 0} 1 ${x2} ${y2}`]
+                    
+                    console.log(arr1)
+
+                    _thisP.setAttribute('d', arr1.join(' '))
+
+                    oS.appendChild(_thisP)
+
+                }, false)
+
+                oP.addEventListener('mouseout', ev => {
+                    let moveR = r
+                    let _thisP = ev.target
+
+                    arr[1] = `A ${moveR} ${moveR} 0 ${endAng - startAng >= 180 ? 1 : 0} 1 ${x2} ${y2}`
+
+                    _thisP.setAttribute('d', arr.join(' '))
+
+                }, false)
+
+            }
+
+            let now = 0;
+
+            drawPie(10,90
+            )
+
+        }
+    </script>
+</head>
+
+<body>
+    <svg width='800' height='700'>
+
+    </svg>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise</title>
+	<script src="jquery-3.3.1.min.js"></script>
+	<script>
+
+	// promise 用法
+
+	let p = new Promise((resolve,reject)=>{
+
+		// resolve(args)
+
+		$.ajax({
+			url: '1.txt',
+			dataType: 'json',
+			success(json){
+				resolve(json)
+			},
+			error(err){
+				alert('失败0',0)
+				reject(err)
+			}
+		})
+			
+	})
+
+
+	// p.then(data=>{
+	// 	console.log(data)
+	// })
+
+
+	// 对于使用者来说就是then(()=>{},()=>{})
+	// p.then(
+	// // 此处的json是promise中传过来的
+	// json=>{
+	// 	console.log(json)	
+	// },
+	// err=>{
+	// 	console.log(err)
+	// })
+
+	Promise.all([
+		$.ajax({ url: '1.txt', dataType: 'json' }),
+		$.ajax({url:'2.txt',dataType:'json'}),
+		$.ajax({url:'3.txt',dataType:'json'})
+	]).then(arr=>{
+		console.log(arr)
+	},err=>{
+
+	})
+
+	// Promise.all([
+	// 	$.ajax({url:'1.txt',dataType:'json'}),
+	// 	$.ajax({url:'2.txt',dataType:'json'}),
+	// 	$.ajax({url:'3.txt',dataType:'json'})
+	// ]).then(arr=>{
+	// 	let [a,b,c] = arr;
+	// 	console.log(a,b,c);
+	// },err=>{
+	// 	alert('fail')
+	// })
+
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

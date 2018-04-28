@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            let oC = document.querySelector('canvas'),
+                gd = oC.getContext('2d')
+
+            function d2a(n) {
+                return n * Math.PI / 180
+            }
+
+            let cx = 300, cy = 300, r = 100
+
+            gd.arc(cx, cy, r, 0, d2a(360))
+
+            gd.stroke()
+
+            oC.addEventListener('mousemove', ev => {
+
+                let x = ev.offsetX, y = ev.offsetY,
+                    disR = Math.sqrt(Math.pow(x - cx, 2), Math.pow(y - cy, 2))
+
+                gd.clearRect(0,0,oC.width,oC.height)
+
+                if(disR <= r){
+                    gd.strokeStyle = 'red'
+                }else{
+                    gd.strokeStyle = 'black'
+                }
+                
+                gd.arc(cx, cy, r, 0, d2a(360))
+                gd.stroke()
+
+            }, false)
+
+        }
+    </script>
+</head>
+
+<body>
+    <canvas width="800" height="800"></canvas>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            height: 200px;
+            width: 200px;
+            background: #aaa;
+            margin: 100px auto;
+        }
+    </style>
+    <script src="hammer.js"></script>
+    <script>
+        window.onload = function(){
+            let oBox = document.querySelector('.box');
+
+            let hammer = new Hammer(oBox);
+
+            hammer.on('tap',()=>{
+                console.log('tap')
+            })
+
+            hammer.on('press',()=>{
+                console.log('press')
+            })
+
+            hammer.on('swipeleft',ev=>{
+                console.log('left')
+            })
+
+            hammer.on('swipeup', () => {
+                console.log('up')
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+</html>

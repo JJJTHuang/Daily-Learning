@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+            background:#000;
+        }
+        canvas{
+            background: #fff;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            let oC = document.querySelector('canvas'),
+                gd = oC.getContext('2d')
+            
+            let oImg = new Image(),x = 100,w=250,frameCounter = 0
+
+            oImg.src = '1.png'
+
+
+            oImg.onload = function(){
+
+                requestAnimationFrame(next)
+
+                function next(){
+
+                    if(x>950)x=100
+
+                    if(frameCounter%20==0){
+                        x += (w +50)
+                    }
+                
+                    gd.clearRect(0,0,oC.width,oC.height)
+
+                    gd.drawImage(oImg, x, 250, 250, 280, 100, 100, 250, 280)
+                    
+                    frameCounter++
+
+                    requestAnimationFrame(next)
+
+                }
+
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <canvas width="800" height="600"></canvas>
+</body>
+</html>

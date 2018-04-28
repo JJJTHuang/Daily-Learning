@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .box {
+            width: 100%;
+            height: 500px;
+            border: 1px solid;
+            overflow: auto;
+        }
+
+        .box ul li {
+            list-style: none;
+            width: 200px;
+            height: 200px;
+            float: left;
+            position: relative;
+            margin: 10px;
+        }
+
+        .box ul li>img {
+            width: auto;
+            height: 145px;
+            box-sizing: border-box;
+        }
+
+        .box ul li>a {
+            position: absolute;
+            top: 15;
+            right: 15;
+            text-decoration: none;
+            color: red;
+            font-size: 10px;
+        }
+
+        .text {
+            margin: 20% 40%;
+            color: #666;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                // Great success! All the File APIs are supported.
+
+                 var oBox = document.querySelector('.box'),
+                    oUl = document.querySelector('ul'),
+                    oBtn = document.querySelector('#btn');
+
+                oBox.addEventListener('dragover', (ev) => {
+                    ev.preventDefault();
+                })
+
+                oBox.addEventListener("drop", (ev) => {
+
+                    Array.from(ev.dataTransfer.files).forEach(file => {
+
+                        let reader = new FileReader();
+
+                        console.log(file);
+
+                        //reader.onload=function(){}无法触发。
+                        reader.onload = function (event) {
+
+                            let oLi = document.createElement('li');
+                            
+                            oLi.innerHTML = `<img src=${event.target.result}>
+                            <a href='javascript:;' class='del'>Delete</a>`
+
+                            oUl.appendChild(oLi);
+                        }
+                        reader.readAsDataURL(file)
+                    })
+
+                    ev.preventDefault();
+
+                }, false);
+
+
+
+                oBox.onclick = function (ev) {
+
+                    let _thisLi = ev.target.parentElement;
+
+                    if (ev.target.className == 'del') {
+                        ev.target.parentElement.parentElement.removeChild(_thisLi);
+                    }
+                }
+
+                oBtn.onclick = function () {
+
+                    let xhr = new XMLHttpRequest(),
+                        data = new FormData();
+
+                    xhr.open('POST', 'http://localhost:8080/api', true);
+
+                    Array.from(oUl.children).forEach(li => {
+                        // data.append('File',li.file);
+                        console.log(li)
+                    })
+
+                    xhr.send(data);
+
+                    xhr.onreadystatechange = function () {
+
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200 && xhr.status < 300 || xhr.status == 304) {
+                                alert('ajaxOK');
+                            } else {
+                                alert('ajaxFailed');
+                            }
+                        }
+                    }
+                }
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+           
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <ul>
+            <li>
+                <img src="data:image/jpeg;base64,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"
+                    alt="">
+                <a href="javascript:;" class="del">Delete</a>
+            </li>
+            <li>
+                <img src="../1.jpg" alt="">
+                <a href="javascript:;" class="del">Delete</a>
+            </li>
+        </ul>
+        <div class="text">文件拖入此处以编辑</div>
+    </div>
+
+    <input id="btn" type="button" value="upload">
+    <input type="file" onchange="onChange(event)">
+
+</body>
+
+</html>

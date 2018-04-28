@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>es7-(async and await)</title>
+	<script>
+	function sleep(sec){
+		return new Promise((resolve,reject)=>{
+			setTimeout(function(){
+				resolve(100)
+			},1000)
+		})
+	}
+
+	// async函数常与promise一起使用
+
+	// await会自动检测后面跟着的代码是否是异步操作，所以后面接的必须是一个异步操作的时候才会有效果
+	
+	async function show(){
+
+		let a = await sleep()
+
+		alert(a)
+
+		await sleep(1)
+
+		alert(2)
+	}
+
+	show()
+
+	// 发展历程 异步操作->promise->generator->async,await
+	// promise 与 generator 与 async await都是异步操作，都是语法糖，只不过这样的更新更方便人类进行开发与阅读
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

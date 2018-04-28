@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        header {
+            height: 3rem;
+            width: 100%;
+        }
+
+        input {
+            float: right;
+            width: 100%;
+            height: 3rem;
+            background: #B52600;
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        .text {
+            text-align: center;
+            font-size: 2rem;
+
+        }
+
+        .page_content {
+            margin: -2rem auto;
+            width: 100%;
+        }
+
+        .banner {
+            width: 100%;
+            height: 11.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner ul {
+            width: 999rem;
+            transform: translateX(-37.5rem);
+            overflow: hidden;
+        }
+
+        .banner ul li {
+            float: left;
+            height: 11.5rem;
+            width: 37.5rem;
+        }
+
+        .banner ul li img {
+            height: 11.5rem;
+            width: 37.5rem;
+        }
+
+        ol {
+            position: absolute;
+            right: 0;
+            bottom: 1rem;
+        }
+
+        ol li {
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            float: left;
+            margin: 0 0.5rem;
+            border-radius: 50%;
+        }
+
+        ol li.active {
+            background: red;
+        }
+    </style>
+
+    <script>
+        window.onresize = function () {
+            //自动根据不同屏幕调节html的fontsize
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / 37.5 + 'px';
+
+            console.log(document.documentElement.clientWidth, document.documentElement.style.fontSize)
+        }
+
+
+        window.onresize();
+
+        window.onload = function () {
+
+            let oBanner = document.querySelector('.banner');
+            let oBannerUl = document.querySelector('.banner ul');
+            let oBannerLi = document.querySelectorAll('.banner ul li');
+            let oPagecontent = document.querySelector('.page_content');
+            let Oli = document.querySelectorAll('ol li');
+            let x = -oBannerLi[0].offsetWidth, y = 0;
+
+            let timer = setInterval(() => {
+                    oBannerUl.style.transition = 'none';
+                    oBannerUl.style.transform = `translateX(${x}px)`;
+                    oBannerUl.style.transition = '0.6s all ease';
+                    x += (-oBannerLi[0].offsetWidth);
+                    End();
+                }, 1000)
+            let timeout = '';
+                
+
+            function End() {
+
+                oBanner.removeEventListener('touchend', End, false);
+
+                if (y > 0) {
+                    y = 0;
+                    oPagecontent.style.transform = `translateY(${y}px)`
+                }
+
+                let n = Math.round(x / oBannerLi[0].offsetWidth);
+                x = n * oBannerLi[0].offsetWidth;
+
+                oBannerUl.style.transition = '0.6s all ease';
+                oBannerUl.style.transform = `translateX(${x}px)`;
+
+                Array.from(Oli).forEach((li, index) => {
+                    (-n - 1) === index ? li.className = "active" : li.className = "";
+                });
+
+                let cur = oBannerUl.style.transform.replace(/[^0-9\-,]/g, '').split(',').toString();
+                max = oBannerLi[0].offsetWidth * 5;
+
+                if (-cur >= max) {
+
+                    if (cur == x) {
+                        x = -oBannerLi[0].offsetWidth;
+
+                        // oBannerUl.style.transition = '0.6s all ease';
+                        // oBannerUl.style.transform = `translateX(${x}px)`;
+
+                        oBannerUl.style.left = `-${oBannerLi[0].offsetWidth}px`
+
+                        Oli[0].className = 'active';
+                    }
+
+                } else if (cur == 0) {
+                    // (5 * oBannerLi[0].offsetWidth)
+                    x = max - oBannerLi[0].offsetWidth;
+                    // oBannerUl.style.transition = `none`;
+                    // oBannerUl.style.transform = `translateX(-${x}px)`;
+                    oBannerUl.style.left = `-${5 * oBannerLi[0].offsetWidth}px`;
+                    Oli[3].className = 'active';
+                    x = -x;
+                }
+
+            }
+
+            // window.clearTimeout()
+
+            oBanner.addEventListener('touchstart', function (ev) {
+
+                // window.clearInterval(timer);
+
+                oBannerUl.style.transform = "none";
+                oBannerUl.style.transition = "none";
+                oPagecontent.style.transform = "none";
+                oPagecontent.style.transition = "none";
+
+                let startX = ev.targetTouches[0].clientX;
+                let startY = ev.targetTouches[0].clientY;
+
+                let disX = startX - x;
+
+                let disY = startY - y;
+
+                let dir = "";
+
+                oBannerUl.style.transform = `translateX(${x}px)`;
+
+                function Move(ev) {
+
+                    if (dir === "") {
+                        if (Math.abs(ev.targetTouches[0].clientX - startX) > 5) {
+                            dir = 'x';
+                        } else if (Math.abs(ev.targetTouches[0].clientY - startY) > 5) {
+                            dir = 'y';
+                        }
+                    } else {
+                        if (dir === 'x') {
+                            x = ev.targetTouches[0].clientX - disX;
+                        } else {
+                            y = ev.targetTouches[0].clientY - disY;
+                        }
+                        
+                        oBannerUl.style.transform = `translateX(${x}px)`;
+                        oBannerUl.style.left = `-${x}px`
+
+                        if (y > 0) {
+                            // y = ev.targetTouches[0].clientY - disY;
+                            oPagecontent.style.transform = `translateY(${y / 2}px)`
+                        } else {
+                            oPagecontent.style.transform = `translateY(${y}px)`
+                        }
+                    }
+
+                }
+
+                end = function End() {
+
+                    oBanner.removeEventListener('touchmove', Move, false);
+                    oBanner.removeEventListener('touchend', End, false);
+
+                    if (y > 0) {
+                        y = 0;
+                        oPagecontent.style.transform = `translateY(${y}px)`
+                    }
+
+                    let n = Math.round(x / oBannerLi[0].offsetWidth);
+                    x = n * oBannerLi[0].offsetWidth;
+
+                    oBannerUl.style.transition = '0.6s all ease';
+                    oBannerUl.style.transform = `translateX(${x}px)`;
+
+                    Array.from(Oli).forEach((li, index) => {
+                        (-n - 1) === index ? li.className = "active" : li.className = "";
+                    });
+
+                    let cur = oBannerUl.style.transform.replace(/[^0-9\-,]/g, '').split(',').toString();
+                    max = oBannerLi[0].offsetWidth * 5;
+
+                    if (-cur >= max) {
+
+                        if (cur == x) {
+                            x = -oBannerLi[0].offsetWidth;
+
+                            oBannerUl.style.transition = 'none';
+                            oBannerUl.style.transform = `translateX(${x}px)`;
+
+                            Oli[0].className = 'active';
+                        }
+
+                    } else if (-cur < oBannerLi[0].offsetWidth || cur == (5 * oBannerLi[0].offsetWidth)) {
+
+                            x = max - oBannerLi[0].offsetWidth;
+                            oBannerUl.style.transition = `none`;
+                            oBannerUl.style.transform = `translateX(-${x}px)`;
+                            Oli[3].className = 'active';
+                            x = -x;
+                    }
+                    
+                }
+
+                oBanner.addEventListener('touchmove', Move, false);
+                oBanner.addEventListener('touchend', End, false);
+                
+                // timeout = setTimeout(() => {
+                //     timer = setInterval(() => {
+                //         oBannerUl.style.transition = 'none';
+                //         oBannerUl.style.transform = `translateX(${x}px)`;
+                //         oBannerUl.style.transition = '0.6s all ease';
+                //         x += (-oBannerLi[0].offsetWidth);
+                //         End();
+                //     }, 1000)
+                // }, 1000);
+                
+            }, false)
+
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <!-- <h1>taobao</h1> -->
+        <input type="text">
+    </header>
+    <div class="text">
+        下拉刷新
+    </div>
+    <div class="page_content">
+        <section class="banner">
+            <ul>
+                <li>
+                    <img src="https://gw.alicdn.com/imgextra/i2/54/TB2UvhHcL5TBuNjSspmXXaDRVXa_!!54-0-lubanu.jpg_q50.jpg">
+                </li>
+                <li>
+                    <img src="https://gw.alicdn.com/imgextra/i1/10/TB2llzyXnqWBKNjSZFAXXanSpXa_!!10-0-luban.jpg_q50.jpg">
+                </li>
+                <li>
+                    <img src="https://aecpm.alicdn.com/simba/img/TB1CWf9KpXXXXbuXpXXSutbFXXX.jpg_q50.jpg">
+                </li>
+                <li>
+                    <img src="https://gw.alicdn.com/imgextra/i2/54/TB2UvhHcL5TBuNjSspmXXaDRVXa_!!54-0-lubanu.jpg_q50.jpg">
+                </li>
+                <li>
+                    <img src="https://gw.alicdn.com/imgextra/i2/54/TB2UvhHcL5TBuNjSspmXXaDRVXa_!!54-0-lubanu.jpg_q50.jpg">
+                </li>
+                <li>
+                    <img src="https://gw.alicdn.com/imgextra/i1/10/TB2llzyXnqWBKNjSZFAXXanSpXa_!!10-0-luban.jpg_q50.jpg">
+                </li>
+            </ul>
+            <ol>
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+        </section>
+    </div>
+</body>
+
+</html>

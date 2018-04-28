@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>仿iphone短信右划删除</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .box {
+            width: 600px;
+            margin: 100px auto;
+        }
+
+        li {
+            position: relative;
+            list-style: none;
+            width: 600px;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid;
+        }
+
+        .btn {
+            height: 30px;
+            background: red;
+            width: 0;
+            color: #fff;
+            float: right;
+            text-align: center;
+            margin-right: -1px;
+        }
+    </style>
+    <script src="hammer.js"></script>
+    <script>
+        window.onload = function () {
+            let oBox = document.querySelector('.box');
+            const msg = [
+                'msgggggggggggggggg1',
+                'msg1111111111111111',
+                'msgggggggggggggggg1',
+                'msgggggggggg1',
+            ]
+            let oUL = document.querySelector('.ul')
+
+            msg.forEach(item => {
+                oli = document.createElement('li');
+                oli.innerHTML = `${item}><a class='btn'>删除</a>`
+
+                oUL.append(oli);
+            })
+
+            let hammer = new Hammer(oBox);
+            hammer.on('tap', ev => {
+
+            })
+
+            let flag = 0;
+
+            hammer.on('swipeleft', ev => {
+                let oli = document.querySelectorAll('.btn');
+                ev.target.children[0].style.transition = '0.3s all';
+                ev.target.children[0].style.width = "60px";
+                if (flag === 0 || flag == ev.target) { }
+                else {
+                    flag.children[0].style.width = '0px';
+                }
+                flag = ev.target;
+            }, false)
+
+            hammer.on('swiperight', ev => {
+                if (flag === 0) {
+                    return;
+                } else {
+                    flag.children[0].style.width = '0px';
+                }
+            })
+
+            hammer.on('tap', ev => {
+                let target = ev.target;
+                let parent = target.parentNode;
+
+                console.log(parent.className = `${parent}`);
+                if (flag === 0) {
+                    return;
+                } else {
+                    flag.children[0].style.width = '0px';
+                }
+
+                if (target.nodeName === 'A') {
+                    target.parentNode.style.transition = '0.5s all ease';
+                    target.parentNode.style.height = '0px';
+                    target.parentNode.style.border = '0px solid';
+                    parent.addEventListener('transitionend',ev=>{
+                        if(ev.propertyName === 'height'){
+                            oUL.removeChild(parent);
+                        }
+
+                        ev.cancelBubble = true;
+                    })
+
+                    target.parentNode.innerText = '';
+                    flag = 0;
+                }
+                
+                target = null;
+            })
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <ul class="ul"></ul>
+    </div>
+</body>
+
+</html>

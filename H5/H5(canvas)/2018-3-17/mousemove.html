@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            position: relative;
+        }
+
+        div{
+            height: 200px;
+            width: 200px;
+        }
+        
+        .s1{
+            position: absolute;
+            left:50px;
+            top: 100px;
+            background: #333111;
+            z-index: 1;
+        }
+
+        .s2{
+            position: absolute;
+            left:150px;
+            top: 200px;
+            background: #3ff111;
+            z-index: 2
+        }
+
+        .s3{
+            position: absolute;
+            left:450px;
+            top: 100px;
+            background: #3cc151;
+            z-index: 3
+        }
+        .s4{
+            position: absolute;
+            left:50px;
+            top: 400px;
+            background: #ece147;
+            z-index: 4
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            
+            let oDiv = document.querySelectorAll('div');
+            
+            let oldPos = Array.from(oDiv).map(div=>{
+                return {
+                    oldLeft:div.offsetLeft,
+                    oldTop:div.offsetTop
+                }
+            })
+
+            
+
+            // oDiv[0].style.left = '500px'
+
+            document.onmousemove = function (ev) {
+                
+                Array.from(oDiv).map((div,index)=>{
+                    div.style.left = oldPos[index].oldLeft+(index+1)*(ev.clientX/100)+'px'
+                    div.style.top = oldPos[index].oldTop+(index+1)*(ev.clientY /100) + 'px'
+                })
+            
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <div class="s1"></div>
+    <div class="s2"></div>
+    <div class="s3"></div>
+    <div class="s4"></div>
+</body>
+</html>

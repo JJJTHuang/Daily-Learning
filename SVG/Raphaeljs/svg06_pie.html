@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            let oS = document.querySelector('svg')
+            let data = [10, 50, 60, 50, 10, 30], sum = 0
+            let cx = 300, cy = 300, r = 200
+
+            data.forEach(item => { sum += item })
+
+            function d2a(n) {
+                return n * Math.PI / 180
+            }
+
+            function drawPie(startAng, endAng) {
+
+                let oP = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+
+                let CNum = Math.floor(Math.random() * 16777215).toString(16)
+
+                if (CNum.length < 6) {
+                    CNum += '0'
+                }
+
+                calc(r)
+
+                function calc(r) {
+
+                    function getPoint(Ang) {
+                        return {
+                            x: cx + r * Math.sin(d2a(Ang)),
+                            y: cy - r * Math.cos(d2a(Ang))
+                        }
+                    }
+
+                    let { x: x1, y: y1 } = getPoint(startAng), { x: x2, y: y2 } = getPoint(endAng)
+
+                    oP.style.fill = `#${CNum}`
+                    let arr = []
+
+                    arr.push(`M ${cx} ${cy} L ${x1} ${y1}`)
+                    arr.push(`A ${r} ${r} 0 ${endAng - startAng >= 180 ? 1 : 0} 1 ${x2} ${y2}`)
+                    arr.push('Z')
+                    oP.setAttribute('d', arr.join(' '))
+                    oS.appendChild(oP)
+                }
+
+                
+
+                let size = 20, curR = r
+                let fnNext = null
+                function move(end) {
+
+                    let start = curR, dis = end - start, count = 0
+
+                    fnNext = function () {
+                        //不断重绘计数器
+                        count++
+
+                        let a = 1 - count / size
+
+                        curR = start + dis * (1 - a * a * a)
+
+                        calc(curR)
+
+                        if (count >= size) {
+                            fnNext = null
+                        }
+
+                    }
+
+                }
+
+                // oP.addEventListener('mouseover', () => {
+                //     move(r * 1.25)
+                // }, false)
+
+                // oP.addEventListener('mouseout', () => {
+                //     move(r)
+                // }, false)
+
+                oP.onmouseover = function () {
+                    move(r * 1.25)
+                }
+
+                oP.onmouseout= function () {
+                    move(r)
+                }
+
+                next()
+
+                function next() {
+                    console.log(1)
+                    fnNext && fnNext()
+                    requestAnimationFrame(next)
+                }
+                
+
+            }
+
+            let now = 0;
+
+            data.forEach(item => {
+
+                let endAng = 360 * item / sum
+
+                drawPie(now, now + endAng)
+
+                now += endAng
+
+            })
+
+           
+
+        }
+    </script>
+</head>
+
+<body>
+    <svg width='800' height='700'>
+
+    </svg>
+</body>
+
+</html>

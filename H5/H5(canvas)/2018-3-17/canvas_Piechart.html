@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background: #000;
+            text-align: center;
+        }
+
+        #canvas {
+            background: #fff
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let oCanvas = document.querySelector('#canvas'),
+                Gd = oCanvas.getContext('2d')
+
+            let arr = [10, 20, 30,40]
+
+            let sum = 0
+
+            arr.map(n => {
+                sum += n
+            })
+
+            let cx = 300, cy = 300, r = 150
+
+            function d2a(n) {
+                return n * Math.PI / 180
+            }
+
+            function drawPie(arr, startAng, endAng,color) {
+
+                let x = cx + Math.cos(d2a(startAng))*r,
+                    y = cy + Math.sin(d2a(startAng))*r
+
+                Gd.beginPath()
+
+                Gd.moveTo(cx, cy)
+                // Gd.lineTo(x, y)
+
+                Gd.arc(cx, cy, r, startAng, endAng)
+
+                Gd.closePath()
+
+                Gd.fillStyle = color
+                Gd.fill()
+
+            }
+
+            // drawPie(arr, 0, d2a(360 * (arr[0] / sum)),'red')
+            // drawPie(arr, d2a(360 * (arr[0] / sum)), d2a(360 * (arr[0] / sum))+d2a(360 * (arr[1] / sum)), 'yellow')
+            // drawPie(arr,  d2a(360 * (arr[1] / sum))+ d2a(360 * (arr[0] / sum)), d2a(360 * (arr[0] / sum))+ d2a(360 * (arr[1] / sum))+ d2a(360 * (arr[2] / sum)), 'skyblue')
+
+            let now = 0,color = ['yellow','pink','blue','green']
+
+
+            arr.forEach((n,index)=>{
+                
+                ang = d2a(360 * n / sum)
+
+                drawPie(arr,now,now+ang,color[index])
+                
+                now += ang
+
+            })
+
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id='canvas' width="800" height="750"></canvas>
+</body>
+
+</html>

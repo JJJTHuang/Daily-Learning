@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tik</title>
+    <script src='raphael.js'></script>
+    <script>
+        window.onload = function () {
+
+            let Page = Raphael(0, 0, 800, 700)
+
+            let cx = 300, cy = 300
+
+            function d2a(n) {
+                return n * Math.PI / 180
+            }
+
+            function draw(r, ang, color) {
+
+                function calc() {
+                    x = cx + r * Math.sin(d2a(ang)), y = cy - r * Math.cos(d2a(ang))
+                }
+
+                Page.path(`M ${cx} ${cy - r} A ${r} ${r} 0 ${ang >= 180 ? 1 : 0} 1 ${x} ${y}`).attr({ 'stroke-width': '20', 'stroke': `${color}` })
+
+                Page.calc = calc
+
+                return Page
+
+            }
+
+            let hours = function () {
+
+                let Hour = new Date().getHours()
+
+                return Hour < 12 ? Hour : Math.abs(Hour - 12)
+            }
+
+            let pages = []
+
+            function run() {
+                if (pages.length == 0) {
+                    pages = [
+                        draw(100, 360 * hours() / 12, 'pink'),
+                        draw(150, 360 * (new Date().getMinutes()) / 60, 'skyblue'),
+                        draw(200, 360 * (new Date().getSeconds()) / 60, 'greenyellow')
+                    ]
+                }else{
+                    
+                }
+
+            }
+
+
+
+            setInterval(() => {
+            }, 1000)
+
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

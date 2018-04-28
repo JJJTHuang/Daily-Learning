@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {width:800px; height:600px; border:1px solid black; margin:10px auto}
+    </style>
+    <script src='echarts.js'></script>
+    <script>
+        window.onload = function () {
+            let chart = echarts.init(document.querySelector('.box'))
+
+            let option = {
+                title:{
+                    text:'直方图Practice',
+                    subtext:'副标题',
+                    x:'left'
+                },
+                // legend:{
+                //     data:['男','女'],
+                // },
+                legend: {
+                    data: ['male', 'female'],
+                    right: 0,
+                    top: '50%',
+                    orient: 'vertical'
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        data:[1,2,3,4,5,6]
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'male',
+                        type:'bar',
+                        data:[111,233,2442,123,123,998]
+                    },
+                    {
+                        name:'female',
+                        type:'bar',
+                        data:[123,436,123,62,213,3123]
+                    }
+                ]
+            }
+
+            chart.setOption(option)
+
+        }     
+    </script>
+</head>
+<body>
+    <div class='box'></div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            height: 200px;
+            width:200px;
+            background: #abc515;
+            text-align: center;
+            line-height: 200px;
+            margin: 100px auto;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let oBox = document.querySelector('div');
+            oBox.ondragenter = function () {
+                oBox.innerHTML = '触发ondragenter,鼠标已进入'; return false;
+            }
+            oBox.ondragleave = function () {
+                oBox.innerHTML = '触发ondragleave，鼠标已移出'; return false;
+            }
+
+            oBox.ondragover = function () {
+                //只要鼠标还没松手、并且还没离开，一直不停发生
+                console.log('1');
+
+                return false;//此处阻止默认事件，若无，则无法触发ondrop事件
+            }
+
+            oBox.ondrop = function (ev) {
+                console.log('鼠标左键一旦离开就触发');
+
+                 let data = new FormData();
+
+                Array.from(ev.dataTransfer.files).forEach(file => {
+                    data.append('oFile', file);
+                });
+
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('post', 'http://localhost:8081/api', true);
+
+                xhr.send(data);
+
+                xhr.onreadystatechange = function () {
+
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200 && xhr.status < 300 || xhr.status == 304) {
+                            alert('success');
+                        } else {
+                            alert('error');
+                        }
+                    }
+
+                }
+
+
+                return false;
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <div>
+        
+    </div>
+</body>
+</html>

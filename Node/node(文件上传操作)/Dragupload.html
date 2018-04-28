@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div{
+            width:400px;
+            height: 200px;
+            border: 1px solid;
+            margin: 20px auto;
+            text-align: center;
+            vertical-align: middle;
+            box-sizing:border-box;
+        }
+    </style>
+    <script>
+
+        window.onload = function(){
+
+            let oDiv = document.querySelector('#div');
+            
+            oDiv.ondragenter = function () {
+                console.log('enter');
+                oDiv.innerHTML = `<p>松开鼠标</p> `
+            }
+            
+            oDiv.ondragleave = function () {
+                console.log('leave');
+            }
+
+            oDiv.ondragover = function () {
+                console.log('over');
+                return false;
+            }
+
+            oDiv.ondrop = function (ev) {
+                
+                let xhr = new XMLHttpRequest(),
+                    data = new FormData();
+
+                Array.from(ev.dataTransfer.files).forEach(file => {
+                    data.append('oF', file);
+                })
+
+                xhr.open('POST', 'http://localhost:8080/api', true); //第三个参数指定同步还是异步
+
+                xhr.send(data);
+
+                xhr.onreadystatechange = function () {
+
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200 && xhr.status < 300 || xhr.status == 304) {
+                            alert('ajaxOK');
+                        } else {
+                            alert('ajaxFailed')
+                        }
+                    }
+
+                }
+
+                return false;
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+    <h1>拖放文件上传</h1>
+    <div id="div">
+        <p>文件拖入此框框即可上传</p>
+    </div>
+</body>
+</html>

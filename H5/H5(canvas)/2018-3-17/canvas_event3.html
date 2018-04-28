@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            let oC = document.querySelector('canvas'),
+                gd = oC.getContext('2d')
+            
+            gd.strokeRect(100,100,100,100)
+
+            let left = 100
+
+            window.requestAnimationFrame(next)
+
+            function next(){
+
+                //清空整个绘画框框
+                gd.clearRect(0, 0, oC.width, oC.height)
+
+                left++
+
+                gd.strokeRect(left, 100, 100, 100)
+
+                window.requestAnimationFrame(next)
+                
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <canvas width="800" height="800"></canvas>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .Room {
+            height: 400px;
+            width: 400px;
+            border: 1px solid;
+            margin: 10px;
+        }
+        
+        .me {
+            color: peru;
+            background: skyblue;
+        }
+        
+        .show {
+            display: none;
+        }
+    </style>
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+        window.onload = function() {
+            function $(obj) {
+                return document.querySelector(obj);
+            }
+
+            let socket = io.connect('ws://localhost:8080');
+            let oRoom = $('.Room'),
+                oUl = $('ul');
+
+            $('#btn').onclick = function() {
+                socket.emit('msg', $('#TA').value);
+                alert(1)
+                let oLi = document.createElement('li');
+                oLi.className = 'me';
+                oLi.innerHTML = $('#TA').value;
+                oUl.append(oLi);
+            }
+
+            socket.on('msg', str => {
+
+                let oLi = document.createElement('li');
+                oLi.class = 'Other';
+                oLi.innerHTML = str;
+                oUl.append(oLi);
+
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <p class="show">服务器未连接，请检查网络。</p>
+    <div class="Room">
+        <ul></ul>
+    </div>
+    <textarea id="TA" cols="60" rows="5">from client 1</textarea>
+    <input type="button" id="btn" value="Send">
+</body>
+
+</html>

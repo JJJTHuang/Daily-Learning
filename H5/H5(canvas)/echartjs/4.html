@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {width:1000px; height:600px; border:1px solid black; margin:10px auto 0}
+    .box .left, .box .right {width:50%; height:100%; float: left}
+    </style>
+    <script src='echarts.js'></script>
+    <script>
+        window.onload = function () {
+            let data = [
+                {
+                    name: '广东',
+                    value: '2000',
+                    cites: [
+                        { name: '广州', value: 1000 },
+                        { name: '中山', value: 500 },
+                        { name: '惠州', value: 500 }
+                    ]
+                },
+                {
+                    name: '湖南',
+                    value: 1675,
+                    cites: [
+                        { name: '长沙', value: 816 },
+                        { name: '潭州', value: 435 },
+                        { name: '桃园', value: 424 },
+                    ]
+                },
+                {
+                    name: '山东',
+                    value: 1354,
+                    cites: [
+                        { name: '济南', value: 615 },
+                        { name: '临沂', value: 443 },
+                        { name: '德州', value: 296 },
+                    ]
+                }
+            ]
+
+            let chartL = echarts.init(document.querySelector('.box .left'))
+            let chartR = echarts.init(document.querySelector('.box .right'))
+
+            let option = {
+                title: {
+                    text: '各省市区人口分布',
+                    subtext: '(单位:万)'
+                },
+                series:[
+                    {
+                        name:'省会人口分布',
+                        type:'pie',
+                        radius:'50%',
+                        data:data.map(item=>({
+                            name:item.name,
+                            value:item.value
+                        }))
+                    }
+                ]
+            }
+            
+            setCity(data[0])
+
+            chartL.on('mouseover',(ev)=>{
+                data.forEach(item=>{
+                    if(item.name == ev.name){
+                        setCity(item)
+                    }
+                })
+            })
+
+            function setCity(Province) {
+                
+                let option = {
+                    title: {
+                        text: `${Province.name}省各市人口分布`,
+                        subtext: `(单位：万)`
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: Province.cites.map(city =>city.name)
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: Province.cites.map(city => city.name ),
+                            type: 'bar',
+                            data: Province.cites.map(city => city.value )
+                        }
+                    ]
+                }
+
+                chartR.setOption(option)
+            }
+
+            chartL.setOption(option)
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <div class="left"></div>
+        <div class="right"></div>
+    </div>
+</body>
+
+</html>

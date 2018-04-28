@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CanvasEvent</title>
+    <style>
+        body{
+            text-align: center
+        }
+    </style>
+    <script>
+        window.onload = function(){
+
+            let oC = document.querySelector('#canvas'),
+                gd = oC.getContext('2d')
+
+            gd.strokeRect(100,100,200,100)
+
+            let l = 100,t = 100,r = l+200,b = t + 100
+
+            oC.addEventListener('mousemove',ev=>{
+
+                let x = ev.offsetX, y = ev.offsetY
+
+                gd.clearRect(0, 0, oC.width, oC.height);
+
+                if(x>=l&&x<=r&&y>=t&&y<=b){
+                    gd.strokeStyle = 'red'
+                }else{
+                    gd.strokeStyle = 'black'
+                }
+
+                gd.strokeRect(100,100,200,100)
+
+            },false)
+            
+        }
+    </script>
+</head>
+<body>
+    <canvas id='canvas' width="800" height="800"></canvas>
+</body>
+</html>

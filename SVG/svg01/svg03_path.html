@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        path{
+            stroke-width: 10;
+            stroke:aqua;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <svg width='800' height='800'>
+        <!-- <path d='M 100 100 L 200 200 300 400'></path> -->
+
+        <!-- 画弧线: A rx(横半径) ry(纵半径) x-axis-rotation(横轴旋转角度) large-arc-flag(大弧标志，0大弧,1小弧) 
+            sweep-flag(扫标志：判定弧在终点与起点连线的左(0)右(1)) x y(终点坐标) -->
+
+        <path d='M 200 200 L 400 200 A 50 40 0 0 1 600 200 L 800 200'></path>
+    </svg>
+</body>
+</html>

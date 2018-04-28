@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        body{
+            text-align: center;
+            background-color : #000
+        }
+
+        canvas{
+            background: #fff
+        }
+    </style>
+    <script>
+        window.onload = function(){
+
+            let oC = document.querySelector('canvas'),
+                gd = oC.getContext('2d')
+            
+            let r = 0
+
+            function next(){
+
+                gd.translate(200,200)
+
+                gd.rotate(30 * Math.PI / 180)
+
+
+                gd.strokeRect(0, 0, 200, 100)
+
+                
+
+            }
+
+            next()
+
+        }
+    </script>
+</head>
+<body>
+    <canvas width="800" height="800"></canvas>
+</body>
+</html>

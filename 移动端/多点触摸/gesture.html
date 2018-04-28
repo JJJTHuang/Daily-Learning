@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            height: 200px;
+            width: 200px;
+            background: #ccc;
+            margin: 100px auto;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+
+            let oBox = document.querySelector('.box');
+
+            function Calcang(touch1, touch2) {
+
+                let x = touch1.clientX - touch2.clientX;
+                let y = touch1.clientY - touch2.clientY;
+
+                return Math.atan2(x,y) / Math.PI * 180;
+
+            }
+
+            let ang1, ang2, transang = 0 , oldang;
+
+            document.addEventListener('touchstart', (ev) => {
+                if(ev.targetTouches.length>=2){
+                    ang1 = Calcang(ev.targetTouches[0], ev.targetTouches[1]);
+                    oldang = transang ;
+                }
+            })
+
+            document.addEventListener('touchmove', (ev) => {
+                if(ev.targetTouches.length>=2){
+                    ang2 = Calcang(ev.targetTouches[0], ev.targetTouches[1]);
+
+                transang = oldang+ang1 - ang2;
+
+                oBox.style.transform = `rotate(${transang}deg)`;
+
+                }
+            })
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box">asdasd</div>
+</body>
+
+</html>

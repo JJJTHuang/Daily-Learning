@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jsonp</title>
+    <script>
+        // window.onload = function() {
+        //     let oIp = document.getElementById('input');
+        //     oIp.oninput = function name(json) {
+        //         let oS = document.createElement('script');
+        //         oS.src = `https: //sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${oIp.value}&cb=name`;
+        //         document.head.appendChild(oS);
+        //         document.createElement('ul');
+        //         for (let i in json) {
+
+        //         }
+        //         document.createElement('li');
+        //         alert(json)
+        //     }
+        // }
+
+        let data = "";
+
+        window.onload = function() {
+
+            let oUl = document.getElementsByTagName('ul')[0],
+                oIp = document.getElementById('input');
+
+
+            oIp.oninput = function() {
+
+                let oS = document.createElement('script');
+                oS.src = `https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${oIp.value}&cb=show&_=1517149928956`;
+                document.head.appendChild(oS);
+
+
+
+                oUl.innerHTML = "";
+                for (let i in data) {
+                    let oli = document.createElement('li');
+                    oli.innerHTML = data[i];
+                    oUl.appendChild(oli);
+                }
+            }
+
+        }
+
+        function show(json) {
+            console.log(json.s)
+            data = json.s;
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" id="input">
+    <ul></ul>
+</body>
+
+</html>

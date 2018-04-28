@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        rect{
+            fill:beige;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+
+            let oV =document.querySelector('svg'),oR = document.querySelector('rect')
+            
+            oR.onclick = function(){
+                //svg与html同是xml发展而来,但svg与html是两套不同的标准
+                oR.setAttribute('x','400')
+                oR.setAttribute('rx','10')
+                oR.setAttribute('ry ', '100')
+                oR.style.fill = '#aabbcc'
+            }
+            
+        }
+    </script>
+</head>
+<body>
+    <svg width="800" height="800">
+        <rect x='100' y ='100' width='200' height='300'></rect>
+    </svg>
+</body>
+</html>

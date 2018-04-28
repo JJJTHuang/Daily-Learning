@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Toutiao</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .active {
+            color: red
+        }
+
+        .box nav {
+            height: 50px;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .box ul {
+            width: 1000px;
+        }
+
+        .box ul li {
+            list-style: none;
+            float: left;
+            width: 60px;
+            text-align: center;
+            margin: 5px;
+        }
+
+        .content {
+            width: 50000px;
+        }
+
+        .content div {
+            float: left;
+            width: 300px;
+            height: 500px;
+            border: 1px solid;
+            margin: 30px;
+        }
+    </style>
+    <script src="hammer.js"></script>
+    <script>
+        window.onload = function () {
+
+            let oBox = document.querySelector('.box');
+            let oNav = document.querySelector('nav');
+            let oUL = document.querySelector('.box ul');
+            let oLi = document.querySelectorAll('nav li');
+            let oContentbox = document.querySelector('.content');
+            let oDiv = document.querySelectorAll('.content div');
+
+            function goto(index) {
+
+                Array.from(oLi).forEach(li => {
+                    li.className = ''
+                })
+
+                oLi[index].className = 'active'
+
+                oContentbox.style.transition = '0.5s all ease'
+                oContentbox.style.transform = `translateX(-${index * oBox.offsetWidth}px)`
+
+                oContentbox.addEventListener('transitionend', fnend, false);
+
+                let tw = oLi[index].offsetLeft - (oBox.offsetWidth - oLi[0].offsetWidth) / 2;
+
+                if (tw > 0) {
+                    oNav.style.transition = '0.5s all ease'
+                    // oNav.style.transform = `translateX(-${tw}px)`
+                    console.log(tw);
+                    oNav.scrollLeft = `${tw}`;
+                } else {
+                    oNav.scrollLeft = `0`;
+                }
+
+            }
+
+            function fnend() {
+                oContentbox.style.transition = 'none';
+                oContentbox.removeEventListener('transitionend', fnend, false);
+            }
+
+            Array.from(oLi).forEach((li, index) => {
+
+                let hammer = new Hammer(li);
+
+                hammer.on('tap', ev => {
+                    console.log(index)
+                    goto(index);
+                })
+
+            })
+
+            //这样可以解决作用域变量重名的问题
+            {
+                let hammer = new Hammer(oContentbox);
+
+                let start_X = 0, start_Y = 0, disX = 0, oldtranslateX = 0;
+
+                hammer.on('panstart', ev => {
+                    start_X = ev.center.x;
+                    oldtranslateX = disX;
+                })
+
+                hammer.on('panmove', ev => {
+                    console.log(disX);
+                    disX =  ev.center.x - start_X + oldtranslateX;
+                    
+                    oContentbox.style.transition = '0.6s all ease'
+                    oContentbox.style.transform = `translateX(${disX}px)`
+
+                    
+                }, false)
+
+                hammer.on('panend', ev => {
+                    // if (disX > (oBox.offsetWidth / 2)){
+                    //     goto(Math.abs(Math.round(disX / oBox.offsetWidth)));
+                    // } else {
+                    //     goto(Math.abs(Math.floor(disX / oBox.offsetWidth)))
+                    // }
+
+
+                    //左滑结束，若是第一页，回到初始位置
+                    if(disX>0){
+                        disX = 0
+                    }
+
+                    //Math.round()实现四舍五入
+                    let n = Math.round(-disX / oDiv[0].offsetWidth);
+
+                    // Array.from(oLi).forEach((li,index)=>{
+
+                    //     if(li.className == 'active'){
+                    //         oDiv[index].off
+                    //     }
+
+                    // })
+
+                    disX = -n * oDiv[0].offsetWidth;
+
+                    goto(n);
+
+                    oContentbox.addEventListener('transitionend', fnend, false);
+                    
+                })
+
+            }
+
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <nav>
+            <ul>
+                <li class="active">直播</li>
+                <li>趣图</li>
+                <li>点赞</li>
+                <li>发现</li>
+                <li>大众</li>
+                <li>民生</li>
+                <li>体育</li>
+            </ul>
+        </nav>
+        <div class="content">
+            <div>直播直播直播直播直播直播直播直播直播直播直播直 播直播直播直播直播直播直播直播直播直播直播直播直播直播直播直播直播
+            </div>
+            <div>趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图 趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图趣图
+            </div>
+            <div>点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞 点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞点赞
+            </div>
+            <div>发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现发现</div>
+            <div>大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众大众</div>
+            <div>民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生民生</div>
+            <div>体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育</div>
+        </div>
+    </div>
+</body>
+
+</html>

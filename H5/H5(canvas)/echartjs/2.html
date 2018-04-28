@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid;
+        }
+    </style>
+    <script src='echarts.js'></script>
+    <script>
+        window.onload = function () {
+            let chart = echarts.init(document.querySelector('.box'))
+
+            let option = {
+                title: {
+                    text: '广东省人口分布',
+                    subtext: '2018男女人口比例(单位：万)'
+                },
+                series: [
+                    {
+                        name: '男女比例',
+                        type: 'pie',
+                        data: [
+                            {name: '男', value: 770},
+                            {name: '女', value: 880},
+                            {name: 'test1',value:213 },
+                            { name: 'test2', value: 213 },
+                            { name: 'test2', value: 2113 },
+                            { name: 'test4', value: 2123 },
+                            { name: 'test5', value: 313 }
+                        ]
+                    }
+                ]
+            }
+
+            chart.setOption(option)
+        }
+    </script>
+</head>
+
+<body>
+    <div class='box'></div>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ajax</title>
+	<script src="jquery-3.3.1.min.js"></script>
+	<script>
+		$(function(){
+			$('#btn').click(function(){
+				$.ajax({
+					url:'1.php',
+					data:{a:1,b:2},
+					type:"get",
+					dataType:'text',
+					success(str){	
+						alert(str)
+					},
+					error(){
+						/* Act on the event */
+						alert('失败。')
+					}
+				})
+			})
+		})
+	</script>
+</head>
+<body>
+		<button id="btn">提交</button>
+</body>
+</html>
