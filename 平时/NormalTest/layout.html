@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+  <title>Document</title>
+  <script>
+    window.onload = function () {
+      let app = new Vue({
+        el : '#app',
+        data : {
+          index : [
+            '轮播图组件','活动list组件'
+          ],
+          list : [
+            '详细信息','活动海报','相关信息(时间,地点,介绍)','(若活动需要报名)报名入口'
+          ],
+          mine : [
+            '个人中心','组织认证','参加活动','已有门票'
+          ]
+        }
+      })
+    }
+  </script>
+</head>
+<body>
+  <div>
+    <ul>
+      <li v-for=""></li>
+    </ul>
+    <ul>
+
+    </ul>
+  </div>
+</body>
+</html>

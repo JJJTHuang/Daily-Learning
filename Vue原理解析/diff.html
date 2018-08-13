@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Diff</title>
+  <script>
+    var REPLACE = 0
+    var REORDER = 1
+    var PROPS = 2
+    var TEXT = 3
+
+    function Element(tagName, props, children) {
+      this.tagName = tagName
+      this.props = props
+      this.children = children
+    }
+
+    function el(tagName, props, children) {
+      return new Element(tagName, props, children)
+    }
+
+    var ul = el('ul', { id: 'list' }, [
+      el('li', { class: 'item' }, ['Item 1']),
+      el('li', { class: 'item' }, ['Item 2']),
+      el('li', { class: 'item' }, ['Item 3'])
+    ])
+
+    Element.prototype.render = function () {
+      var el = document.createElement(this.tagName)
+      var props = this.props
+
+      for (var propName in props) {
+        var propValue = props[propName]
+        el.setAttribute(propName, propValue)
+      }
+
+      var children = this.children || []
+
+      children.forEach(function(child) {
+        var childEl = (child instanceof Element)
+          ? child.render()
+          : document.createTextNode(child)
+        el.appendChild(childEl)
+      })
+
+      return el
+    }
+
+    console.log(ul.render())
+
+    // diff 对比两棵树
+    function diff (oldTree, newTree) {
+      var index = 0
+      var patches = {}
+      dfsWalk(oldTree, newTree, index, patches)
+      return patches
+    }
+
+    // 对两棵树进行深度优先遍历
+    function dfsWalk (oldNode, newNode, index, patches) {
+      // 对比oldNode 和 newNode的不同,记录下来
+      // patches[index] = [...] 很多操作
+      diffchildren(oldChildren, newChildren, index, patches)
+    }
+
+    function diffchildren(oldChildren, newChildren, index, patches) {
+      var leftNode = null
+      var currentNodeIndex = index
+      oldChildren.forEach(function(child, i){
+        var newChild = newChild[i]
+        currentNodeIndex = (leftNode && leftNode.count) // 计算节点标识
+          ? currentNodeIndex + leftNode.count + 1
+          : currentNodeIndex + 1
+        dfsWalk(oldChildren, newChildren, index, patches)
+        leftNode = child
+      })
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>

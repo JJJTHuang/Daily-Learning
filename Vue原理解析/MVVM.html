@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- MVVM 与 依赖收集 -->
+  <script>
+
+    /**
+      * MVVM 与 依赖收集
+      *
+      */
+
+    // defineReactive --- 实现数据劫持
+    function defineReactive (obj, key, val) {
+
+      const dep = new Dep()
+
+      Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function () {
+          dep.addSub(Dep.target)
+          return val
+        },
+        set: function (newval) {
+          if (newval === val) return
+          val = newval
+          dep.notify()
+          console.log('update.')
+        }
+      })
+    }
+
+    // 在源码中进行的是递归调用(这里用循环模拟)
+    /*
+     * 遍历对象中的元素
+     */
+    function observer (obj) {
+      if(!obj || Object.prototype.toString.call(obj) !== '[object Object]') return
+
+      Object.keys(obj).forEach(item => {
+        defineReactive(obj, item,  obj[item])
+      })
+    }
+
+    // 验证
+    class Vue {
+      constructor (options) {
+        this._data = options.data
+        observer(this._data)
+        // 新建watch时，Dep.target指向此对象
+        new Watcher()
+        console.log('render',this._data.test)
+      }
+    }
+
+    // 收集者
+    class Dep {
+      constructor () {
+        this.subs = []
+      }
+      
+      addSub (sub) {
+        this.subs.push(sub)
+      }
+
+      notify () {
+        this.subs.forEach(sub => {
+          sub.update()
+        })
+      }
+    }
+
+    // 观察者
+    class Watcher {
+      constructor () {
+        Dep.target =  this
+      }
+      
+      update () {
+        console.log('此对象视图已更新。')
+      }
+    }
+
+    Dep.target = null
+
+    let globalData = {
+      test: 1
+    }
+
+    let vm = new Vue({
+      data: globalData
+    })
+
+    let vm2 = new Vue({
+      data: globalData
+    })
+
+    vm._data.test = 4
+  </script>
+
+  <!-- VNode -->
+  <script>
+    class VNode {
+      constructor (tag, data, children, text, ele) {
+        /*当前节点的标签名*/
+        this.tag = tag;
+        /*当前节点的一些数据信息，比如props、attrs等数据*/
+        this.data = data;
+        /*当前节点的子节点，是一个数组*/
+        this.children = children;
+        /*当前节点的文本*/
+        this.text = text;
+        /*当前虚拟节点对应的真实dom节点*/
+        this.elm = elm;
+      }
+    }
+
+    /**
+      * eg:
+      * <template>
+      *  <span class="demo" v-show="isShow">
+      *    This is a span.
+      *  </span>
+      * </template>
+      * 这样一个模板转换成VNode如下
+     **/
+
+    // 渲染函数 
+    function render () {
+      return new VNode(
+        'span',
+        {
+          /* 指令集合数组 */
+          directives: [
+            {
+              /* v-show指令 */
+              rawName: 'v-show',
+              expression: 'isShow',
+              name: 'show',
+              value: true
+            }
+          ],
+          /* 静态class */
+          staticClass: 'demo'
+        },
+        [ new VNode(undefined,undefined,undefined,'This is a span.') ]
+      )
+    }
+
+    // 如上模板转换成VNode如下
+    let node = {
+      tag: 'span',
+      data: {
+        /* 指令集合数组 */
+        directives: [
+          {
+            /* v-show指令 */
+            rawName: 'v-show',
+            expression: 'isShow',
+            name: 'show',
+            value: true
+          }
+        ],
+        /* 静态class */
+        staticClass: 'demo'
+      },
+      text: undefined,
+      children: [
+        /* 子节点是一个文本VNode节点 */
+        {
+          tag: undefined,
+          data: undefined,
+          text: 'This is a span.',
+          children: undefined
+        }
+      ]
+    }
+
+    // 拓展
+
+    // 创建一个空节点
+    function createEmptyVNode () {
+      let node = new VNode()
+      node.text = ''
+      return node
+    }
+
+    // 创建一个文本节点
+    function createTextVNode(val) {
+      return new VNode(undefined,undefined,undefined,String(val))
+    }
+
+    // 克隆一个VNode
+    function cloneVNode(node) {
+      const cloneVnode = new VNode(
+        node.tag,
+        node.data,
+        node.children,
+        node.text,
+        node.elm
+      );
+      return cloneVnode;
+    }
+  </script>
+
+  <!-- Compile(parse, optimize, generate) -->
+  <script>
+    // eg:
+    // <div : class="c" class="demo" v-if="isShow">
+    //   <span v-for="item in sz">{{ item }}</span>
+    // </div>
+
+    var html = '<div :class="c" class="demo" v-if="isShow"><span v-for="item in sz">{{item}}</span></div>'
+
+    // 这个过程比较复杂，会涉及到比较多的正则进行字符串解析，我们先来看一下得到的 AST 的样子。
+
+    let node = {
+      /* 标签属性的map，记录了标签上属性 */
+      'attrsMap': {
+        ':class': 'c',
+        'class': 'demo',
+        'v-if': 'isShow'
+      },
+      /* 解析得到的:class */
+      'classBinding': 'c',
+      /* 标签属性v-if */
+      'if': 'isShow',
+      /* v-if的条件 */
+      'ifConditions': [
+        {
+          'exp': 'isShow'
+        }
+      ],
+      /* 标签属性class */
+      'staticClass': 'demo',
+      /* 标签的tag */
+      'tag': 'div',
+      /* 子标签数组 */
+      'children': [
+        {
+          'attrsMap': {
+            'v-for': "item in sz"
+          },
+          /* for循环的参数 */
+          'alias': "item",
+          /* for循环的对象 */
+          'for': 'sz',
+          /* for循环是否已经被处理的标记位 */
+          'forProcessed': true,
+          'tag': 'span',
+          'children': [
+            {
+              /* 表达式，_s是一个转字符串的函数 */
+              'expression': '_s(item)',
+              'text': '{{item}}'
+            }
+          ]
+        }
+      ]
+    }
+  
+    // 下面开始解析此过程
+    // 前进
+    function advance(n) {
+      index += n
+      html = html.substring(n)
+    }
+    
+    // 转化
+    function parseHTML() {
+      while (html) {
+        let textEnd = html.indexOf('<')
+        
+      }
+    }
+
+  </script>
+<title>MVVM</title>
+</head>
+<body>
+  
+</body>
+</html>

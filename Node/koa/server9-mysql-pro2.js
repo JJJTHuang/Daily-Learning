@@ -1,4 +1,5 @@
 const koa = require('koa')
+// mysql-pro
 const mysql = require('mysql-pro')
 const router = require('koa-router')
 
@@ -25,6 +26,8 @@ r1.get('/user', async (ctx, next) => {
     console.log(ctx.query)
 
     try{
+
+        // Transaction 事务(要么都发生，要么都不发生) ACID四个特性
         await db.startTransaction()
         let data = await db.executeTransaction("SELECT * FROM user_table where id = ?",[id]);
         await db.stopTransaction();
